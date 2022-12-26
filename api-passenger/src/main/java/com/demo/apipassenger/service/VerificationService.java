@@ -16,19 +16,15 @@ public class VerificationService {
     @Autowired
     private ServiceVerificationcodeClient verificationcodeClient;
 
-    public String generatorCode(String passengerPhone) {
+    public ResponseResurt generatorCode(String passengerPhone) {
         //调用验证码服务 获取验证码
-
         ResponseResurt<NumberCodeResponse> numberCodeResponse = verificationcodeClient.numberCode(5);
-        int code = numberCodeResponse.getCode();
+        int code = numberCodeResponse.getData().getNumberCode();
+
         //存入  redis
-        System.out.println("code:" + code );
-        System.err.println("number code " + numberCodeResponse.getData().getNumberCode());
+        System.err.println("number code " + code);
 
         //返回值
-        JSONObject result = new JSONObject();
-        result.put("code", 1);
-        result.put("message", "success");
-        return result.toString();
+        return ResponseResurt.success(code);
     }
 }
