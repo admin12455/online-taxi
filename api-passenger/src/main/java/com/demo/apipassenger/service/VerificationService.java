@@ -1,11 +1,16 @@
 package com.demo.apipassenger.service;
 
 import com.demo.apipassenger.remote.ServiceVerificationcodeClient;
+import com.demo.intarnalcommon.constant.CommonStatusEnum;
 import com.demo.intarnalcommon.dto.ResponseResurt;
 import com.demo.intarnalcommon.response.NumberCodeResponse;
-import net.sf.json.JSONObject;
+import com.demo.intarnalcommon.response.TokenResponse;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by jzx on 2022/12/16 15:51
@@ -29,7 +34,7 @@ public class VerificationService {
 
         //存入  redis
         //key value 过期时间
-        String key = verificationCodePrefix + passengerPhone;
+        String key = generatorKeyByPhone(passengerPhone);
         redisTemplate.opsForValue().set(key,code+"", 2, TimeUnit.MINUTES);
 
         System.err.println("number code " + code);
@@ -38,5 +43,37 @@ public class VerificationService {
 
         //返回值
         return ResponseResurt.success(code);
+    }
+
+    /**
+     * 校验验证码
+     * @param passengerPhone 手机号
+     * @param verificationCode 验证码
+     * @return
+     */
+    public ResponseResurt CheckVerificationCode(String passengerPhone, String verificationCode) {
+        //根据手机号去redis获取验证码
+        String key = generatorKeyByPhone(passengerPhone);
+        String code = redisTemplate.opsForValue().get(key);
+
+        //比较验证码
+        if (StringUtils.isBlank(code)||!verificationCode.trim().equals(code.trim())) {
+            return ResponseResurt.fail(CommonStatusEnum.VERFICATION_CODE_ERROR.getCode(),CommonStatusEnum.VERFICATION_CODE_ERROR.getValue());
+        }
+        //判断原来是否有用户
+
+        //办法令牌
+        TokenResponse tokenResponse = new TokenResponse();
+        tokenResponse.setToken("token value");
+        return ResponseResurt.success(tokenResponse);
+    }
+
+    /**
+     * 根据手机号生成Key
+     * @param passengerPhone 手机号
+     * @return
+     */
+    public static String generatorKeyByPhone(String passengerPhone){
+        return verificationCodePrefix + passengerPhone;
     }
 }
