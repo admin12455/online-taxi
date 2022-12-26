@@ -1,16 +1,13 @@
 package com.demo.apipassenger.request;
 
+import lombok.Data;
+
 /**
  * Created by jzx on 2022/12/16 15:48
  */
+@Data
 public class VerificationCodeDto {
     private String passengerPhone;
 
-    public String getPassengerPhone() {
-        return passengerPhone;
-    }
-
-    public void setPassengerPhone(String passengerPhone) {
-        this.passengerPhone = passengerPhone;
-    }
+    private String verificationCode;
 }

@@ -20,7 +20,6 @@ public class VerificationCodeController {
     @GetMapping("/verification-code")
     public ResponseResurt verificationCode(@RequestBody VerificationCodeDto verificationCodeDto) {
         String passengerPhone = verificationCodeDto.getPassengerPhone();
-        System.out.println("参数：" + passengerPhone);
         return verificationService.generatorCode(passengerPhone);
     }
 }
