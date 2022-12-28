@@ -1,4 +1,4 @@
-package com.demo.apipassenger.request;
+package com.demo.intarnalcommon.request;
 
 import lombok.Data;
 

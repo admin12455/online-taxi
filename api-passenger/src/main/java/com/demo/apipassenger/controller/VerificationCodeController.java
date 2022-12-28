@@ -1,6 +1,6 @@
 package com.demo.apipassenger.controller;
 
-import com.demo.apipassenger.request.VerificationCodeDto;
+import com.demo.intarnalcommon.request.VerificationCodeDto;
 import com.demo.apipassenger.service.VerificationService;
 import com.demo.intarnalcommon.dto.ResponseResurt;
 import org.springframework.beans.factory.annotation.Autowired;
