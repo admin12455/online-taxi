@@ -14,8 +14,3 @@ spring:
     host: 127.0.0.1
 #    password: shudunR@6379edis
 
-management:
-  endpoint:
-    web:
-      exposure:
-        incluce: '*'

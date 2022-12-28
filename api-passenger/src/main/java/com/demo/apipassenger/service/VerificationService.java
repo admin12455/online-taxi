@@ -1,8 +1,10 @@
 package com.demo.apipassenger.service;
 
+import com.demo.apipassenger.remote.ServicePassengerUserClient;
 import com.demo.apipassenger.remote.ServiceVerificationcodeClient;
 import com.demo.intarnalcommon.constant.CommonStatusEnum;
 import com.demo.intarnalcommon.dto.ResponseResurt;
+import com.demo.intarnalcommon.request.VerificationCodeDto;
 import com.demo.intarnalcommon.response.NumberCodeResponse;
 import com.demo.intarnalcommon.response.TokenResponse;
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +22,9 @@ public class VerificationService {
 
     @Autowired
     private ServiceVerificationcodeClient verificationcodeClient;
+
+    @Autowired
+    private ServicePassengerUserClient passengerUserClient;
 
     //验证码前缀
     private static String verificationCodePrefix = "passage-verification-code-";
@@ -61,8 +66,11 @@ public class VerificationService {
             return ResponseResurt.fail(CommonStatusEnum.VERFICATION_CODE_ERROR.getCode(),CommonStatusEnum.VERFICATION_CODE_ERROR.getValue());
         }
         //判断原来是否有用户
+        VerificationCodeDto verificationCodeDto = new VerificationCodeDto();
+        verificationCodeDto.setPassengerPhone(passengerPhone);
+        passengerUserClient.loginOrRegister(verificationCodeDto);
 
-        //办法令牌
+        //颁发令牌
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setToken("token value");
         return ResponseResurt.success(tokenResponse);
