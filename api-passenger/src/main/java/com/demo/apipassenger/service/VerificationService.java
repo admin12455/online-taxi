@@ -9,6 +9,7 @@ import com.demo.intarnalcommon.request.VerificationCodeDto;
 import com.demo.intarnalcommon.response.NumberCodeResponse;
 import com.demo.intarnalcommon.response.TokenResponse;
 import com.demo.intarnalcommon.util.JwtUtils;
+import com.demo.intarnalcommon.util.RedisPrefixUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -28,9 +29,6 @@ public class VerificationService {
     @Autowired
     private ServicePassengerUserClient passengerUserClient;
 
-    //验证码前缀
-    private static String verificationCodePrefix = "passage-verification-code-";
-
     @Autowired
     private StringRedisTemplate redisTemplate;
 
@@ -41,7 +39,7 @@ public class VerificationService {
 
         //存入  redis
         //key value 过期时间
-        String key = generatorKeyByPhone(passengerPhone);
+        String key = RedisPrefixUtils.generatorKeyByPhone(passengerPhone);
         redisTemplate.opsForValue().set(key,code+"", 2, TimeUnit.MINUTES);
 
         System.err.println("number code " + code);
@@ -60,7 +58,7 @@ public class VerificationService {
      */
     public ResponseResurt CheckVerificationCode(String passengerPhone, String verificationCode) {
         //根据手机号去redis获取验证码
-        String key = generatorKeyByPhone(passengerPhone);
+        String key = RedisPrefixUtils.generatorKeyByPhone(passengerPhone);
         String code = redisTemplate.opsForValue().get(key);
 
         //比较验证码
@@ -74,17 +72,12 @@ public class VerificationService {
 
         //颁发令牌
         String token = JwtUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);
+
+        //将token 保存到redis中
+        redisTemplate.opsForValue().set(RedisPrefixUtils.generatorTokenKey(passengerPhone, IdentityConstant.PASSENGER_IDENTITY), token, 30, TimeUnit.DAYS);
+
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setToken(token);
         return ResponseResurt.success(tokenResponse);
-    }
-
-    /**
-     * 根据手机号生成Key
-     * @param passengerPhone 手机号
-     * @return
-     */
-    public static String generatorKeyByPhone(String passengerPhone){
-        return verificationCodePrefix + passengerPhone;
     }
 }

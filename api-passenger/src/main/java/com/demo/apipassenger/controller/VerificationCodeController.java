@@ -18,12 +18,22 @@ public class VerificationCodeController {
     @Autowired
     VerificationService verificationService;
 
+    /**
+     * 获取验证码
+     * @param verificationCodeDto
+     * @return
+     */
     @GetMapping("/verification-code")
     public ResponseResurt verificationCode(@RequestBody VerificationCodeDto verificationCodeDto) {
         String passengerPhone = verificationCodeDto.getPassengerPhone();
         return verificationService.generatorCode(passengerPhone);
     }
 
+    /**
+     * 校验验证码
+     * @param verificationCodeDto
+     * @return
+     */
     @PostMapping("/verification-code-check")
     public ResponseResurt CheckVerificationCode(@RequestBody VerificationCodeDto verificationCodeDto) {
 

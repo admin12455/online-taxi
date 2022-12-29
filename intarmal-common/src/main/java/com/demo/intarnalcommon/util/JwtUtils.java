@@ -30,15 +30,15 @@ public class JwtUtils {
         Map<String, String> map = new HashMap<>();
         map.put(JWT_KEY_PHONE, phone);
         map.put(JWT_KEY_IDENTITY, identity);
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, 1);
-        Date time = calendar.getTime();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.DATE, 1);
+//        Date time = calendar.getTime();
         // 生成 build
         JWTCreator.Builder builder = JWT.create();
         // 整合 map
         map.forEach((k,v) -> builder.withClaim(k,v));
         // 整合过期时间
-        builder.withExpiresAt(time);
+//        builder.withExpiresAt(time);
         // 生成
         String token = builder.sign(Algorithm.HMAC256(SIGN));
         return token;
