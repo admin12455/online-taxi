@@ -7,6 +7,7 @@ import com.demo.intarnalcommon.dto.ResponseResurt;
 import com.demo.intarnalcommon.request.VerificationCodeDto;
 import com.demo.intarnalcommon.response.NumberCodeResponse;
 import com.demo.intarnalcommon.response.TokenResponse;
+import com.demo.intarnalcommon.util.JwtUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -71,8 +72,9 @@ public class VerificationService {
         passengerUserClient.loginOrRegister(verificationCodeDto);
 
         //颁发令牌
+        String token = JwtUtils.generatorToken(passengerPhone, "1");
         TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setToken("token value");
+        tokenResponse.setToken(token);
         return ResponseResurt.success(tokenResponse);
     }
 
