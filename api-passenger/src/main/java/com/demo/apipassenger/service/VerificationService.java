@@ -3,6 +3,7 @@ package com.demo.apipassenger.service;
 import com.demo.apipassenger.remote.ServicePassengerUserClient;
 import com.demo.apipassenger.remote.ServiceVerificationcodeClient;
 import com.demo.intarnalcommon.constant.CommonStatusEnum;
+import com.demo.intarnalcommon.constant.IdentityConstant;
 import com.demo.intarnalcommon.dto.ResponseResurt;
 import com.demo.intarnalcommon.request.VerificationCodeDto;
 import com.demo.intarnalcommon.response.NumberCodeResponse;
@@ -72,7 +73,7 @@ public class VerificationService {
         passengerUserClient.loginOrRegister(verificationCodeDto);
 
         //颁发令牌
-        String token = JwtUtils.generatorToken(passengerPhone, "1");
+        String token = JwtUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setToken(token);
         return ResponseResurt.success(tokenResponse);
