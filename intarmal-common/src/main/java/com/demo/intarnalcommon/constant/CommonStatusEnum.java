@@ -10,6 +10,8 @@ import lombok.Getter;
 public enum CommonStatusEnum {
 
     VERFICATION_CODE_ERROR(1001, "验证码错误！"),
+    TOKEN_ERROR(1199, "token错误！"),
+    TOKEN_TIMEOUT(1198, "token过期！"),
 
     SUCCESS(0,"success"),
 

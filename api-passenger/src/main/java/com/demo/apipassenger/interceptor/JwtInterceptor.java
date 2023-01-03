@@ -1,8 +1,5 @@
 package com.demo.apipassenger.interceptor;
 
-import com.auth0.jwt.exceptions.AlgorithmMismatchException;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.demo.intarnalcommon.dto.ResponseResurt;
 import com.demo.intarnalcommon.dto.TokenResult;
 import com.demo.intarnalcommon.util.JwtUtils;
@@ -32,32 +29,14 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         String token = request.getHeader("Authorization");
 
-        TokenResult tokenResult = null;
-        try {
-            tokenResult = JwtUtils.parseToken(token);
-        } catch (SignatureVerificationException e) {
-            // token签名错误
-            resultStr = "token sign error";
-            result = false;
-        } catch (TokenExpiredException e) {
-            // token过期超时
-            resultStr = "token time out";
-            result = false;
-        } catch (AlgorithmMismatchException e) {
-            // token算法错误
-            resultStr = "token algo error";
-            result = false;
-        } catch (Exception e) {
-            resultStr = "token invalid";
-            result = false;
-        }
+        TokenResult tokenResult = JwtUtils.checkToken(token);
 
         if (!result || tokenResult == null) {
             PrintWriter out = response.getWriter();
             out.print(JSONObject.fromObject(ResponseResurt.fail(resultStr)).toString());
             result = false;
         } else {
-            String tokenKey = RedisPrefixUtils.generatorTokenKey(tokenResult.getPhone(), tokenResult.getIdentity());
+            String tokenKey = RedisPrefixUtils.generatorTokenKey(tokenResult.getPhone(), tokenResult.getIdentity(), tokenResult.getTokenType());
             String tokenRedis = redisTemplate.opsForValue().get(tokenKey);
 
             if (StringUtils.isBlank(tokenRedis) || !token.trim().equals(tokenRedis.trim())) {

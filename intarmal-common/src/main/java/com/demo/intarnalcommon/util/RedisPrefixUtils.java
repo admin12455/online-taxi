@@ -9,12 +9,13 @@ public class RedisPrefixUtils {
     private static final String verificationCodePrefix = "passage-verification-code-";
     //token前缀
     private static final String TokenPrefix = "token-";
+
     /**
      * 根据手机号生成Key
      * @param passengerPhone 手机号
      * @return
      */
-    public static String generatorKeyByPhone(String passengerPhone){
+    public static String generatorKeyByPhone(String passengerPhone) {
         return verificationCodePrefix + passengerPhone;
     }
 
@@ -24,7 +25,7 @@ public class RedisPrefixUtils {
      * @param identity
      * @return
      */
-    public static String generatorTokenKey(String phone, String identity) {
-        return TokenPrefix + phone+ "-"+ identity;
+    public static String generatorTokenKey(String phone, String identity, String tokenType) {
+        return TokenPrefix + phone + "-" + identity + "-" + tokenType;
     }
 }

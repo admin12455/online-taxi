@@ -3,6 +3,7 @@ package com.demo.apipassenger.controller;
 import com.demo.intarnalcommon.request.VerificationCodeDto;
 import com.demo.apipassenger.service.VerificationService;
 import com.demo.intarnalcommon.dto.ResponseResurt;
+import com.demo.intarnalcommon.response.TokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,5 +43,16 @@ public class VerificationCodeController {
         System.err.println("shoujihao :" + passengerPhone + "code:" + verificationCode);
 
         return verificationService.CheckVerificationCode(passengerPhone, verificationCode);
+    }
+
+    /**
+     * 双TOKEN 刷新
+     * @param tokenResponse
+     * @return
+     */
+    @PostMapping("/token-refresh")
+    public ResponseResurt redreshToken(@RequestBody TokenResponse tokenResponse) {
+        String refreshToken = tokenResponse.getRefreshToken();
+        return verificationService.refreshToken(refreshToken);
     }
 }

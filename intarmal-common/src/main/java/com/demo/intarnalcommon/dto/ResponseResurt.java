@@ -35,6 +35,10 @@ public class ResponseResurt<T> {
         return new ResponseResurt().setCode(CommonStatusEnum.FAIL.getCode()).setMessage(message);
     }
 
+    public static <T> ResponseResurt fail(CommonStatusEnum commonStatusEnum) {
+        return new ResponseResurt().setCode(commonStatusEnum.getCode()).setMessage(commonStatusEnum.getValue());
+    }
+
     public static <T> ResponseResurt fail(int code, String message) {
         return new ResponseResurt().setCode(code).setMessage(message);
     }
