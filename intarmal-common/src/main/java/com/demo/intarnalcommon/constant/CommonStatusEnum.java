@@ -12,6 +12,7 @@ public enum CommonStatusEnum {
     VERFICATION_CODE_ERROR(1001, "验证码错误！"),
     TOKEN_ERROR(1199, "token错误！"),
     TOKEN_TIMEOUT(1198, "token过期！"),
+    USER_NOT_EXISTS(2001, "当前用户不存在！"),
 
     SUCCESS(0,"success"),
 

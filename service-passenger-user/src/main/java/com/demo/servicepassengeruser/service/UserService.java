@@ -1,7 +1,8 @@
 package com.demo.servicepassengeruser.service;
 
+import com.demo.intarnalcommon.constant.CommonStatusEnum;
 import com.demo.intarnalcommon.dto.ResponseResurt;
-import com.demo.servicepassengeruser.dto.PassengerUser;
+import com.demo.intarnalcommon.dto.PassengerUser;
 import com.demo.servicepassengeruser.mapper.PassengerUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,22 @@ public class UserService {
         }
 
         return ResponseResurt.success();
+    }
+
+    /**
+     * 根据手机号查询用户信息
+     * @param passengerPhone
+     * @return
+     */
+    public ResponseResurt<PassengerUser> getUserByPhone(String passengerPhone) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("passenger_phone", passengerPhone);
+        map.put("state", 0);
+        List<PassengerUser> passengerUsers = userMapper.selectByMap(map);
+        if (passengerUsers.size() == 0) {
+            return ResponseResurt.fail(CommonStatusEnum.USER_NOT_EXISTS);
+        } else {
+            return ResponseResurt.success(passengerUsers.get(0));
+        }
     }
 }

@@ -9,3 +9,7 @@ CREATE TABLE `service-passenger-user`.`passenger_user`
     `gmt_modified`     datetime                               DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
+
+
+ALTER TABLE `service-passenger-user`.`passenger_user`
+    ADD COLUMN `profile_photo` varchar(128) NULL COMMENT '头像地址的URL' AFTER `state`;

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by jzx on 2022/12/16 15:46
  */
@@ -47,12 +49,12 @@ public class VerificationCodeController {
 
     /**
      * 双TOKEN 刷新
-     * @param tokenResponse
+     * @param request
      * @return
      */
     @PostMapping("/token-refresh")
-    public ResponseResurt redreshToken(@RequestBody TokenResponse tokenResponse) {
-        String refreshToken = tokenResponse.getRefreshToken();
+    public ResponseResurt redreshToken(HttpServletRequest request) {
+        String refreshToken  = request.getHeader("Authorization");
         return verificationService.refreshToken(refreshToken);
     }
 }
